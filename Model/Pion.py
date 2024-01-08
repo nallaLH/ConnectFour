@@ -36,8 +36,20 @@ def construirePion(color : int) -> dict:
     """
     if type(color) != int:
         raise TypeError("construirePion : Le paramètre n’est pas de type entier")
-    if color not in [0, 1]:
+    if color not in const.COULEUR:
         raise ValueError("construirePion : la couleur (valeur_du_paramètre) n’est pas correcte")
 
     return {const.COULEUR: color, const.ID: None}
+
+def getCouleurPion(pion: dict) -> int:
+    """
+    Fonction permettant de récupérer la couleur d'un pion
+    :param pion: Pion dont on veut récupérer la couleur
+    :return: Entier représentant la couleur du pion
+    :raise TypeError: Si le paramètre n’est pas un entier
+    """
+    if type_pion(pion) == False:
+        raise TypeError("getCouleurPion : Le paramètre n'est pas un pion")
+    return pion[const.COULEUR]
+
 
