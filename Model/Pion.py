@@ -52,4 +52,23 @@ def getCouleurPion(pion: dict) -> int:
         raise TypeError("getCouleurPion : Le paramètre n'est pas un pion")
     return pion[const.COULEUR]
 
+def setCouleurPion(pion: dict, color: int) -> None:
+    """
+    Fonction permettant de modifier la couleur d'un pion
+    :param pion: Pion dont on veut modifier la couleur
+    :param color: Nouvelle couleur qui va être attribuée au pion
+    :return: Ne retourne rien
+    :raise TypeError: Si le premier paramètre n’est pas un pion
+    :raise TypeError: Si le second paramètre n'est pas un entier
+    :raise ValueError: Si la valeur du second paramètre ne correspond pas à une couleur
+    """
+    if type_pion(pion) == False:
+        raise TypeError("setCouleurPion : Le premier paramètre n’est pas un pion")
+    if type(color) != int:
+        raise TypeError("setCouleurPion : Le second paramètre n’est pas un entier")
+    if color not in const.COULEUR:
+        raise ValueError("setCouleurPion : Le second paramètre (valeur_du_second_paramètre) n’est pas une couleur")
+    pion[const.COULEUR] = color
+
+    return None
 
