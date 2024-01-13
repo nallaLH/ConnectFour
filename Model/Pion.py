@@ -36,7 +36,7 @@ def construirePion(color : int) -> dict:
     """
     if type(color) != int:
         raise TypeError("construirePion : Le paramètre n’est pas de type entier")
-    if color not in const.COULEUR:
+    if color not in const.COULEURS:
         raise ValueError("construirePion : la couleur (valeur_du_paramètre) n’est pas correcte")
 
     return {const.COULEUR: color, const.ID: None}
@@ -50,6 +50,7 @@ def getCouleurPion(pion: dict) -> int:
     """
     if type_pion(pion) == False:
         raise TypeError("getCouleurPion : Le paramètre n'est pas un pion")
+
     return pion[const.COULEUR]
 
 def setCouleurPion(pion: dict, color: int) -> None:
@@ -66,9 +67,38 @@ def setCouleurPion(pion: dict, color: int) -> None:
         raise TypeError("setCouleurPion : Le premier paramètre n’est pas un pion")
     if type(color) != int:
         raise TypeError("setCouleurPion : Le second paramètre n’est pas un entier")
-    if color not in const.COULEUR:
+    if color not in const.COULEURS:
         raise ValueError("setCouleurPion : Le second paramètre (valeur_du_second_paramètre) n’est pas une couleur")
     pion[const.COULEUR] = color
+
+    return None
+
+def getIdPion(pion: dict) -> int:
+    """
+    Fonction permettant de récupérer l'id d'un pion
+    :param pion: Pion dont on veut récupérer l'id
+    :return: Retourne l'id du pion passé en paramètre
+    :raise TypeError: Si le paramètre n’est pas un pion
+    """
+    if type_pion(pion) == False:
+        raise TypeError("getIdPion : Le paramètre n’est pas un pion")
+
+    return pion[const.ID]
+
+def setIdPion(pion: dict, valeur: int) -> None:
+    """
+    Fonction permettant de modifier l'id d'un pion
+    :param pion: Pion dont on veut modifier l'id
+    :param valeur: Valeur qui va modifier l'id
+    :return: Ne retourne rien
+    :raise TypeError: Si le premier paramètre n’est pas un pion
+    :raise TypeError: Si le second paramètre n’est pas un entier
+    """
+    if type_pion(pion) == False:
+        raise TypeError("setIdPion : Le premier paramètre n’est pas un pion ")
+    if type(valeur) != int:
+        raise TypeError("setIdPion : Le second paramètre n'est pas un entier")
+    pion[const.ID] = valeur
 
     return None
 
