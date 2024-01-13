@@ -105,7 +105,7 @@ def toStringPlateau(plateau: list) -> str:
 
 def detecter4horizontalPlateau(plateau: list, couleur: int) -> list:
     """
-    Fonction permettant de détecter si 4 pions se suivent sur le plateau
+    Fonction permettant de détecter si 4 pions se suivent à l'horizontale sur le plateau
     :param plateau: Plateau sur lequel nous allons détecter les pions
     :param color: Couleur des pions que nous allons regarder
     :return: Retourne une liste de pions de la couleur donnée en paramètre qui sont alignés par 4, sinon retourne une liste vide
@@ -121,8 +121,6 @@ def detecter4horizontalPlateau(plateau: list, couleur: int) -> list:
         raise ValueError(f"setCouleurPion : Le second paramètre {couleur} n’est pas une couleur")
 
     res = []
-
-
     for i in range(const.NB_LINES):
         nbPion = []
         j = 0
@@ -138,3 +136,38 @@ def detecter4horizontalPlateau(plateau: list, couleur: int) -> list:
             res += nbPion[:4]
 
     return res
+
+def detecter4verticalPlateau(plateau: list, couleur: int) -> list:
+    """
+    Fonction permettant de détecter si 4 pions se suivent à la verticale sur le plateau
+    :param plateau: Plateau sur lequel nous allons détecter les pions
+    :param color: Couleur des pions que nous allons regarder
+    :return: Retourne une liste de pions de la couleur donnée en paramètre qui sont alignés par 4, sinon retourne une liste vide
+    :raise TypeError: Si le premier paramètre n'est pas un plateau
+    :raise TypeError: Si le second paramètre n'est pas un entier
+    :raise ValueError: Si la valeur du second paramètre ne correspond pas à une couleur
+    """
+    if type_plateau(plateau) == False:
+        raise TypeError("detecter4horizontalPlateau : Le premier paramètre ne correspond pas à un plateau")
+    if type(couleur) != int:
+        raise TypeError("detecter4horizontalPlateau : Le second paramètre n’est pas un entier")
+    if couleur not in const.COULEURS:
+        raise ValueError(f"setCouleurPion : Le second paramètre {couleur} n’est pas une couleur")
+
+    res = []
+    for i in range(const.NB_COLUMNS):
+        nbPion = []
+        j = 0
+        while j < const.NB_LINES:
+            if plateau[j][i] is not None and plateau[j][i][const.COULEUR] == couleur:
+                nbPion.append(plateau[j][i])
+            else:
+                if len(nbPion) >= 4:
+                    res += nbPion[:4]
+                nbPion = []
+            j += 1
+        if len(nbPion) >= 4:
+            res += nbPion[:4]
+
+    return res
+
