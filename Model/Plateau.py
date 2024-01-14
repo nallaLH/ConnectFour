@@ -266,3 +266,19 @@ def getPionsGagnantsPlateau(plateau: list) -> list:
     res += detecter4horizontalPlateau(plateau, const.JAUNE) + detecter4verticalPlateau(plateau, const.JAUNE) + detecter4diagonaleDirectePlateau(plateau, const.JAUNE) + detecter4diagonaleIndirectePlateau(plateau, const.JAUNE) + detecter4horizontalPlateau(plateau, const.ROUGE) + detecter4verticalPlateau(plateau, const.ROUGE) + detecter4diagonaleDirectePlateau(plateau, const.ROUGE) + detecter4diagonaleIndirectePlateau(plateau, const.ROUGE)
 
     return res
+
+
+def isRempliPlateau(plateau: list) -> bool:
+    """
+    Fonction permettant de savoir si un plateau est rempli ou non
+    :param plateau: Plateau sur lequel la partie se déroule
+    :return: Retourne un booléen True si le plateau est rempli, False dans le cas contraire
+    :raise TypeError: Si le paramètre n'est pas un plateau
+    """
+    if type_plateau(plateau) == False:
+        raise TypeError("isRempliPlateau : Le paramètre n'est pas un plateau")
+    res = False
+    i = j = 0
+    if plateau[i][j] is not None and plateau[i][j+1] is not None and plateau[i][j+2] is not None and plateau[i][j+3] is not None and plateau[i][j+4] is not None and plateau[i][j+5] is not None and plateau[i][j+6] is not None:
+        res = True
+    return res
