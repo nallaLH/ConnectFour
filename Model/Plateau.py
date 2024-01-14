@@ -121,20 +121,20 @@ def detecter4horizontalPlateau(plateau: list, couleur: int) -> list:
         raise ValueError(f"detecter4horizontalPlateau : Le second paramètre {couleur} n’est pas une couleur")
 
     res = []
-    for i in range(const.NB_LINES):
-        nbPion = []
+    i = 0
+    while i < const.NB_LINES:
         j = 0
-        while j < const.NB_COLUMNS:
-            if plateau[i][j] is not None and plateau[i][j][const.COULEUR] == couleur:
-                nbPion.append(plateau[i][j])
-            else:
-                if len(nbPion) >= 4:
-                    res += nbPion[:4]
-                nbPion = []
+        while j <= (const.NB_COLUMNS - 4):
+            if (plateau[i][j] is not None and getCouleurPion(plateau[i][j]) == couleur) and (plateau[i][j + 1] is not None and getCouleurPion(plateau[i][j + 1]) == couleur) and (plateau[i][j + 2] is not None and getCouleurPion(plateau[i][j + 2]) == couleur) and (plateau[i][j + 3] is not None and getCouleurPion(plateau[i][j + 3]) == couleur):
+                if j != 0:
+                    if plateau[i][j-1] is not None and getCouleurPion(plateau[i][j-1]) != couleur:
+                        res += [plateau[i][j], plateau[i][j + 1], plateau[i][j + 2], plateau[i][j + 3]]
+                        # res += [i,j,i,j + 1, i,j + 2,i,j + 3]
+                else:
+                    res += [plateau[i][j], plateau[i][j + 1], plateau[i][j + 2], plateau[i][j + 3]]
+                    # res += [i,j,i,j + 1, i,j + 2,i,j + 3]
             j += 1
-        if len(nbPion) >= 4:
-            res += nbPion[:4]
-
+        i += 1
     return res
 
 def detecter4verticalPlateau(plateau: list, couleur: int) -> list:
@@ -155,20 +155,20 @@ def detecter4verticalPlateau(plateau: list, couleur: int) -> list:
         raise ValueError(f"detecter4verticalPlateau : Le second paramètre {couleur} n’est pas une couleur")
 
     res = []
-    for i in range(const.NB_COLUMNS):
-        nbPion = []
+    i = const.NB_LINES-1
+    while i >= 3:
         j = 0
-        while j < const.NB_LINES:
-            if plateau[j][i] is not None and plateau[j][i][const.COULEUR] == couleur:
-                nbPion.append(plateau[j][i])
-            else:
-                if len(nbPion) >= 4:
-                    res += nbPion[:4]
-                nbPion = []
+        while j < const.NB_COLUMNS:
+            if (plateau[i][j] is not None and getCouleurPion(plateau[i][j]) == couleur) and (plateau[i-1][j] is not None and getCouleurPion(plateau[i-1][j]) == couleur) and (plateau[i-2][j] is not None and getCouleurPion(plateau[i-2][j]) == couleur) and (plateau[i-3][j] is not None and getCouleurPion(plateau[i-3][j]) == couleur):
+                if i != (const.NB_LINES-1) :
+                    if plateau[i+1][j] is not None and getCouleurPion(plateau[i+1][j]) != couleur:
+                        res += [plateau[i][j], plateau[i-1][j], plateau[i-2][j], plateau[i-3][j]]
+                        # res += [i,j,i-1,j, i-2,j,i-3,j]
+                else:
+                    res += [plateau[i][j], plateau[i-1][j], plateau[i-2][j], plateau[i-3][j]]
+                    # res += [i,j,i-1,j, i-2,j,i-3,j]
             j += 1
-        if len(nbPion) >= 4:
-            res += nbPion[:4]
-
+        i -= 1
     return res
 
 def detecter4diagonaleDirectePlateau(plateau: list, couleur: int) -> list:
@@ -200,10 +200,11 @@ def detecter4diagonaleDirectePlateau(plateau: list, couleur: int) -> list:
 
                     if plateau[i - 1][j - 1] is not None and getCouleurPion(plateau[i - 1][j - 1]) != couleur:
                         res += [plateau[i][j], plateau[i + 1][j + 1], plateau[i + 2][j + 2], plateau[i + 3][j + 3]]
+                        # res += i, j, " ",i + 1, j + 1, " ",i + 2, j + 2, " ",i + 3, j + 3, " "
 
                 else:
                     res += [plateau[i][j], plateau[i + 1][j + 1], plateau[i + 2][j + 2], plateau[i + 3][j + 3]]
-
+                    # res += i, j, " ", i + 1, j + 1, " ", i + 2, j + 2, " ", i + 3, j + 3, " "
             j += 1
         i += 1
 
@@ -238,13 +239,14 @@ def detecter4diagonaleIndirectePlateau(plateau: list, couleur: int) -> list:
                 if i != (const.NB_LINES-1) and j != 0:
 
                     if plateau[i + 1][j - 1] is not None and getCouleurPion(plateau[i + 1][j - 1]) != couleur:
-                        res += [plateau[i][j], plateau[i - 1][j + 1], plateau[i - 2][j + 2], plateau[i - 3][j + 3]]
-
+                        if (i - 3) >= 0 and (j + 3) <= 6:
+                            res += [plateau[i][j], plateau[i - 1][j + 1], plateau[i - 2][j + 2], plateau[i - 3][j + 3]]
+                            # res += i, j, " ",i - 1, j + 1, " ",i - 2, j + 2, " ",i - 3, j + 3, " "
 
                 else:
                     if (i-3) >= 0 and (j+3) <= 6:
                         res += [plateau[i][j], plateau[i - 1][j + 1], plateau[i - 2][j + 2], plateau[i - 3][j + 3]]
-
+                        # res += i,j," ",i-1,j+1," ",i-2,j+2," ",i-3,j+3, " "
             j += 1
         i -= 1
 
@@ -260,7 +262,7 @@ def getPionsGagnantsPlateau(plateau: list) -> list:
     """
     if type_plateau(plateau) == False:
         raise TypeError("getPionsGagnantsPlateau : Le paramètre n’est pas un plateau")
-    liste = []
-    res = detecter4horizontalPlateau(plateau, const.JAUNE) + detecter4verticalPlateau(plateau, const.JAUNE) + detecter4horizontalPlateau(plateau, const.JAUNE) + detecter4diagonaleIndirectePlateau(plateau, const.JAUNE) + detecter4horizontalPlateau(plateau, const.ROUGE) + detecter4verticalPlateau(plateau, const.ROUGE) + detecter4diagonaleDirectePlateau(plateau, const.ROUGE) + detecter4diagonaleIndirectePlateau(plateau, const.ROUGE)
-    liste.append(res)
-    return liste
+    res = []
+    res += detecter4horizontalPlateau(plateau, const.JAUNE) + detecter4verticalPlateau(plateau, const.JAUNE) + detecter4diagonaleDirectePlateau(plateau, const.JAUNE) + detecter4diagonaleIndirectePlateau(plateau, const.JAUNE) + detecter4horizontalPlateau(plateau, const.ROUGE) + detecter4verticalPlateau(plateau, const.ROUGE) + detecter4diagonaleDirectePlateau(plateau, const.ROUGE) + detecter4diagonaleIndirectePlateau(plateau, const.ROUGE)
+
+    return res
