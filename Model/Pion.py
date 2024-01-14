@@ -46,7 +46,7 @@ def getCouleurPion(pion: dict) -> int:
     Fonction permettant de récupérer la couleur d'un pion
     :param pion: Pion dont on veut récupérer la couleur
     :return: Entier représentant la couleur du pion
-    :raise TypeError: Si le paramètre n’est pas un entier
+    :raise TypeError: Si le paramètre n’est pas un pion (dictionnaire)
     """
     if type_pion(pion) == False:
         raise TypeError("getCouleurPion : Le paramètre n'est pas un pion")
