@@ -240,10 +240,27 @@ def detecter4diagonaleIndirectePlateau(plateau: list, couleur: int) -> list:
                     if plateau[i + 1][j - 1] is not None and getCouleurPion(plateau[i + 1][j - 1]) != couleur:
                         res += [plateau[i][j], plateau[i - 1][j + 1], plateau[i - 2][j + 2], plateau[i - 3][j + 3]]
 
+
                 else:
-                    res += [plateau[i][j], plateau[i - 1][j + 1], plateau[i - 2][j + 2], plateau[i - 3][j + 3]]
+                    if (i-3) >= 0 and (j+3) <= 6:
+                        res += [plateau[i][j], plateau[i - 1][j + 1], plateau[i - 2][j + 2], plateau[i - 3][j + 3]]
 
             j += 1
         i -= 1
 
     return res
+
+
+def getPionsGagnantsPlateau(plateau: list) -> list:
+    """
+    Fonction donnant toutes les séries de 4 pions allignés trouvées pour les deux couleurs, s'il n'y en a pas, renvoie une liste vide
+    :param plateau: Plateau sur lequel nous allons récupérer les séries gagnantes
+    :return: Retourne la liste de toutes les séries de 4 pions allignés
+    :raise TypeError: Si le paramètre n'est pas un plateau
+    """
+    if type_plateau(plateau) == False:
+        raise TypeError("getPionsGagnantsPlateau : Le paramètre n’est pas un plateau")
+    liste = []
+    res = detecter4horizontalPlateau(plateau, const.JAUNE) + detecter4verticalPlateau(plateau, const.JAUNE) + detecter4horizontalPlateau(plateau, const.JAUNE) + detecter4diagonaleIndirectePlateau(plateau, const.JAUNE) + detecter4horizontalPlateau(plateau, const.ROUGE) + detecter4verticalPlateau(plateau, const.ROUGE) + detecter4diagonaleDirectePlateau(plateau, const.ROUGE) + detecter4diagonaleIndirectePlateau(plateau, const.ROUGE)
+    liste.append(res)
+    return liste
