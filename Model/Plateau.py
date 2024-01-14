@@ -175,7 +175,7 @@ def detecter4diagonaleDirectePlateau(plateau: list, couleur: int) -> list:
     """
     Fonction permettant de détecter si 4 pions se suivent en diagonale directe sur le plateau
     :param plateau: Plateau sur lequel nous allons détecter les pions
-    :param color: Couleur des pions que nous allons regarder
+    :param couleur: Couleur des pions que nous allons regarder
     :return: Retourne une liste de pions de la couleur donnée en paramètre qui sont alignés par 4, sinon retourne une liste vide
     :raise TypeError: Si le premier paramètre n'est pas un plateau
     :raise TypeError: Si le second paramètre n'est pas un entier
@@ -201,8 +201,8 @@ def detecter4diagonaleDirectePlateau(plateau: list, couleur: int) -> list:
                     if plateau[i - 1][j - 1] is not None and getCouleurPion(plateau[i - 1][j - 1]) != couleur:
                         res += [plateau[i][j], plateau[i + 1][j + 1], plateau[i + 2][j + 2], plateau[i + 3][j + 3]]
 
-                    else:
-                        res += [plateau[i][j], plateau[i + 1][j + 1], plateau[i + 2][j + 2], plateau[i + 3][j + 3]]
+                else:
+                    res += [plateau[i][j], plateau[i + 1][j + 1], plateau[i + 2][j + 2], plateau[i + 3][j + 3]]
 
             j += 1
         i += 1
@@ -210,3 +210,40 @@ def detecter4diagonaleDirectePlateau(plateau: list, couleur: int) -> list:
     return res
 
 
+def detecter4diagonaleIndirectePlateau(plateau: list, couleur: int) -> list:
+    """
+    Fonction permettant de détecter si 4 pions se suivent en diagonale indirecte sur le plateau
+    :param plateau: Plateau sur lequel nous allons détecter les pions
+    :param couleur: Couleur des pions que nous allons regarder
+    :return: Retourne une liste de pions de la couleur donnée en paramètre qui sont alignés par 4, sinon retourne une liste vide
+    :raise TypeError: Si le premier paramètre n'est pas un plateau
+    :raise TypeError: Si le second paramètre n'est pas un entier
+    :raise ValueError: Si la valeur du second paramètre ne correspond pas à une couleur
+    """
+    if type_plateau(plateau) == False:
+        raise TypeError("detecter4diagonaleIndirectePlateau : Le premier paramètre ne correspond pas à un plateau")
+    if type(couleur) != int:
+        raise TypeError("detecter4diagonaleIndirectelPlateau : Le second paramètre n’est pas un entier")
+    if couleur not in const.COULEURS:
+        raise ValueError(f"detecter4diagonaleIndirectePlateau : Le second paramètre {couleur} n’est pas une couleur")
+
+    res = []
+    i = const.NB_LINES - 1
+    while i >= (const.NB_LINES - 4):
+        j = 0
+        while j <= (const.NB_COLUMNS - 4):
+
+            if (plateau[i][j] is not None and getCouleurPion(plateau[i][j]) == couleur) and (plateau[i - 1][j + 1] is not None and getCouleurPion(plateau[i - 1][j + 1]) == couleur) and (plateau[i - 2][j + 2] is not None and getCouleurPion(plateau[i - 2][j + 2]) == couleur) and (plateau[i - 3][j + 3] is not None and getCouleurPion(plateau[i - 3][j + 3]) == couleur):
+
+                if i != (const.NB_LINES-1) and j != 0:
+
+                    if plateau[i + 1][j - 1] is not None and getCouleurPion(plateau[i + 1][j - 1]) != couleur:
+                        res += [plateau[i][j], plateau[i - 1][j + 1], plateau[i - 2][j + 2], plateau[i - 3][j + 3]]
+
+                else:
+                    res += [plateau[i][j], plateau[i - 1][j + 1], plateau[i - 2][j + 2], plateau[i - 3][j + 3]]
+
+            j += 1
+        i -= 1
+
+    return res
